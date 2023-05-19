@@ -46,7 +46,7 @@
 						<div class="col-sm-12">
 							<div class="card">
 								<div class="card-body">
-									<h5 class="d-flex align-items-center mb-3">Tahapan Submit Inovasi</h5>
+									<h5 class="d-flex align-items-center mb-3">Detail Data Inovasi (Produk)</h5>
                   <table class="table table-hover">
                           <tr>
                               <td style="table-layout: fixed; width: 150px;"><b>Judul Inovasi</b></td>

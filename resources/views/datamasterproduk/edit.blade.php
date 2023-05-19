@@ -44,12 +44,13 @@
               </div>
               
               <div class="card-body">
-              <form method="post" action="{{route('masterproduk/store')}}" enctype="multipart/form-data">
+              <form method="post" action="{{route('masterproduk/update')}}" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group">
                       <label for="basicInput">Judul Inovasi <font color="red">*</font></label>
+                      <input type="hidden" name="id" value="{{$produk[0]->id_inovasi}}"/>
                       <input
                         type="text"
                         class="form-control"
@@ -91,8 +92,10 @@
                       />
                     </div>
                     <div class="form-group">
-                      <label for="readonlyInput">Unggah Foto Inovasi (Produk) <font color="red">*</font></label>
-                      <input class="form-control" type="file" id="formFile" name="gambar" accept="image/png, image/jpeg, image/jpg, image/gif" required>
+                      <label for="readonlyInput">Unggah Foto Inovasi (Produk)</label>
+                      <input class="form-control" type="file" id="formFile" name="gambar" accept="image/png, image/jpeg, image/jpg, image/gif" onchange="loadFile(event)">
+                      </br>
+                      <img id="output" src="{{ asset('public/storages/masterinovasi/produk') }}/{{$produk[0]->unggah_dokumen}}" class="img-thumbnail" alt="Pasfoto" width="204" height="136">
                     </div>
                     
                   </div>
@@ -150,6 +153,14 @@ hrg.addEventListener('keyup', function(e)
 		rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
 		return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
 	}
+
+  var loadFile = function(event) {
+    var output = document.getElementById('output');
+    output.src = URL.createObjectURL(event.target.files[0]);
+    output.onload = function() {
+      URL.revokeObjectURL(output.src) // free memory
+    }
+  };
 
 </script>
 @endpush

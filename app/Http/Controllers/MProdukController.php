@@ -8,6 +8,7 @@ use Redirect; //untuk redirect
 use Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 use Validator;
 
 class MProdukController extends Controller
@@ -146,6 +147,91 @@ class MProdukController extends Controller
 
         //  dd($produk);
         return view('datamasterproduk.edit', $data);
+    }
+
+    public function update(Request $request)
+    {
+    	$id = $request->post('id');
+    	$produk = DB::table('inovasi_tb')->where('id_inovasi', $id)->get();
+
+        $validator = Validator::make($request->all(), [ // <---
+            'judul' => 'required',
+            'bidang' => 'required',
+            'deskripsi' => 'required',
+            'harga' => 'required',
+            'gambar'  => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+        ]);
+
+        if($validator->fails()) {
+        	 return Redirect::back()->withErrors($validator);
+        }else{
+
+        	if ($files = $request->file('gambar')) {
+        		unlink(public_path('storages/masterinovasi/produk/'.$produk[0]->unggah_dokumen));
+            //store file into document folder
+            $image = $request->file('gambar');
+            $new_name = rand() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('storages/masterinovasi/produk/'), $new_name);
+
+	    	$data = array(
+	    		'judul' => $request->post('judul'),
+	    		'bidang' => $request->post('bidang'),
+	    		'deskripsi_produk' => $request->post('deskripsi'),
+	    		'harga_produk' => str_replace(".", "", $request->post('harga')),
+	    		'unggah_dokumen' => $new_name,
+                'updated_at' => Carbon::now()->toDateTimeString()
+	    	);
+	            	
+	        $simpan = DB::table('inovasi_tb')->where('id_inovasi', $id)->update($data);
+	        if($simpan) {
+	            Session::flash('success','Berhasil mengubah master data inovasi (Produk)');
+	            return redirect('masterproduk');
+	        }else{
+	            //DB::rollback();
+	            Session::flash('fail','Gagal mengubah master data inovasi (Produk)');
+	            return redirect()->back()->withInput();
+	        }
+
+		    }else{
+		    	$data = array(
+                    'judul' => $request->post('judul'),
+                    'bidang' => $request->post('bidang'),
+                    'deskripsi_produk' => $request->post('deskripsi'),
+                    'harga_produk' => str_replace(".", "", $request->post('harga')),
+                    'updated_at' => Carbon::now()->toDateTimeString()
+                );
+                        
+                $simpan = DB::table('inovasi_tb')->where('id_inovasi', $id)->update($data);
+                if($simpan) {
+                    Session::flash('success','Berhasil mengubah master data inovasi (Produk)');
+                    return redirect('masterproduk');
+                }else{
+                    //DB::rollback();
+                    Session::flash('fail','Gagal mengubah master data inovasi (Produk)');
+                    return redirect()->back()->withInput();
+                }
+		    }
+
+        }
+        
+    }
+
+    public function destroy(Request $request)
+    {
+        $produk = DB::table('inovasi_tb')->where('id_inovasi', $request->post('id'))->get();
+    	unlink(public_path('storages/masterinovasi/produk/'.$produk[0]->unggah_dokumen));
+
+    	$hapus =  DB::table('inovasi_tb')->where('id_inovasi', $request->post('id'));
+        $hapus->delete();
+        if($hapus) {
+            Session::flash('success','Berhasil menghapus master data inovasi (Produk)');
+            return redirect('masterproduk');
+        }else{
+            //DB::rollback();
+            Session::flash('fail','Gagal menghapus master data inovasi (Produk)');
+            return redirect('masterproduk');
+        }
+
     }
     
 
