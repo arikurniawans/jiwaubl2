@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <title>{{$title}} | PPIK</title>
     <link rel="stylesheet" href="{{asset('public/template/back/compiled/css/app.css')}}">
     <link rel="stylesheet" href="{{asset('public/template/back/compiled/css/app-dark.css') }}">
@@ -60,6 +61,8 @@
     <script src="{{asset('public/template/back/static/js/pages/form-element-select.js') }}"></script>
     <script src="{{asset('public/template/back/extensions/sweetalert2/sweetalert2.min.js') }}"></script>
     <script src="{{asset('public/template/back/static/js/pages/sweetalert2.js') }}"></script>
+    <script src="https://cdn.tiny.cloud/1/conh6akldvf0pu23ph6dyjniwgm3w4qyjjnmdpqblain7fhc/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <!-- {% endif %} -->
     @stack('lib-js')
 

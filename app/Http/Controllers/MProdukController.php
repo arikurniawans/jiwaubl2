@@ -86,7 +86,8 @@ class MProdukController extends Controller
 	    		'harga_produk' => str_replace(".", "", $request->post('harga')),
 	    		'unggah_dokumen' => $new_name,
                 'jenis_inovasi' => 'produk',
-                'created_by' => Auth::id()
+                'created_by' => Auth::id(),
+                'created_at' => Carbon::now()->toDateTimeString()
 	    	);
 	            	
 	        $simpan = DB::table('inovasi_tb')->insert($data);
@@ -236,8 +237,6 @@ class MProdukController extends Controller
 
     public function publish(Request $request)
     {
-        $produk = DB::table('inovasi_tb')->where('id_inovasi', $request->post('id'))->get();
-
         $data = array(
             'status_inovasi' => '1',
             'updated_at' => Carbon::now()->toDateTimeString()
@@ -251,6 +250,90 @@ class MProdukController extends Controller
             //DB::rollback();
             Session::flash('fail','Gagal publish master data inovasi (Produk)');
             return redirect('masterproduk');
+        }
+    }
+
+    public function getRevision($id) 
+    {
+        $produk = DB::table('v_inovasi')->where('id_inovasi', base64_decode($id))->get();
+
+        $data = [
+            'title' => 'Perbaikan Data Master Inovasi (Produk)',
+            'produk' => $produk,
+            'breadcrumb' => [
+                ['url' => 'dashboard' , 'name' => 'Dashboard'],
+                ['url' => 'masterproduk' , 'name' => 'Master Inovasi (Produk)'],
+                ['url' => '' , 'name' => 'Perbaikan Master Data Inovasi (Produk)'],
+            ],
+            
+            'testVariable' => 'Perbaikan Master Data Inovasi (Produk)'
+        ];
+
+        //  dd($produk);
+        return view('datamasterproduk.revision', $data);
+    }
+
+    public function notes(Request $request)
+    {
+ 
+        $data = array(
+            'catatan' => $request->post('catatan'),
+            'status_inovasi' => '2',
+            'updated_at' => Carbon::now()->toDateTimeString()
+        );
+
+        $ubah = DB::table('inovasi_tb')->where('id_inovasi', $request->post('id'))->update($data);
+        if($ubah) {
+            // Session::flash('success','Berhasil publish master data inovasi (Produk)');
+            // return redirect('masterproduk');
+            return response()->json(['message'=>'Berhasil']);
+        }else{
+            //DB::rollback();
+            // Session::flash('fail','Gagal publish master data inovasi (Produk)');
+            // return redirect('masterproduk');
+            return response()->json(['message'=>'Gagal']);
+        }
+    }
+
+    public function getRejected($id) 
+    {
+        $produk = DB::table('v_inovasi')->where('id_inovasi', base64_decode($id))->get();
+
+        $data = [
+            'title' => 'Anulir Data Master Inovasi (Produk)',
+            'produk' => $produk,
+            'breadcrumb' => [
+                ['url' => 'dashboard' , 'name' => 'Dashboard'],
+                ['url' => 'masterproduk' , 'name' => 'Master Inovasi (Produk)'],
+                ['url' => '' , 'name' => 'Anulir Master Data Inovasi (Produk)'],
+            ],
+            
+            'testVariable' => 'Anulir Master Data Inovasi (Produk)'
+        ];
+
+        //  dd($produk);
+        return view('datamasterproduk.rejected', $data);
+    }
+
+    public function anulir(Request $request)
+    {
+ 
+        $data = array(
+            'catatan' => $request->post('catatan'),
+            'status_inovasi' => '3',
+            'updated_at' => Carbon::now()->toDateTimeString()
+        );
+
+        $ubah = DB::table('inovasi_tb')->where('id_inovasi', $request->post('id'))->update($data);
+        if($ubah) {
+            // Session::flash('success','Berhasil publish master data inovasi (Produk)');
+            // return redirect('masterproduk');
+            return response()->json(['message'=>'Berhasil']);
+        }else{
+            //DB::rollback();
+            // Session::flash('fail','Gagal publish master data inovasi (Produk)');
+            // return redirect('masterproduk');
+            return response()->json(['message'=>'Gagal']);
         }
     }
     

@@ -46,8 +46,12 @@ Route::post('/masterproduk/store', [MProdukController::class, 'store'])->name('m
 Route::post('/masterproduk/update', [MProdukController::class, 'update'])->name('masterproduk/update')->middleware('auth');
 Route::post('/masterproduk/destroy', [MProdukController::class, 'destroy'])->name('masterproduk/destroy')->middleware('auth');
 Route::post('/masterproduk/publish', [MProdukController::class, 'publish'])->name('masterproduk/publish')->middleware('auth');
+Route::post('/masterproduk/notes', [MProdukController::class, 'notes'])->name('masterproduk/notes')->middleware('auth');
+Route::post('/masterproduk/anulir', [MProdukController::class, 'anulir'])->name('masterproduk/anulir')->middleware('auth');
 Route::get('/masterproduk/edit/{id}', [MProdukController::class, 'getEdit'])->middleware('auth');
 Route::get('/masterproduk/detail/{id}', [MProdukController::class, 'getShow'])->middleware('auth');
+Route::get('/masterproduk/revision/{id}', [MProdukController::class, 'getRevision'])->middleware('auth');
+Route::get('/masterproduk/rejected/{id}', [MProdukController::class, 'getRejected'])->middleware('auth');
 
 
 Route::get('/masterjasa', [MJasaController::class, 'getIndex'])->name('masterjasa')->middleware('auth');

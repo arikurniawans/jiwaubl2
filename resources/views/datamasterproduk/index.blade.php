@@ -75,6 +75,8 @@
                       <a href="{{route('masterproduk')}}/edit/{{ base64_encode($data->id_inovasi) }}" class="btn btn-sm btn-info">Edit</a>
                       <a href="javascript:void(0);" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#backdrop{{$data->id_inovasi}}">Hapus</a>
                       <a href="javascript:void(0);" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#mdpublish{{$data->id_inovasi}}">Publish</a>
+                      <a href="{{route('masterproduk')}}/revision/{{ base64_encode($data->id_inovasi) }}" class="btn btn-sm btn-warning">Perbaikan</a>
+                      <a href="{{route('masterproduk')}}/rejected/{{ base64_encode($data->id_inovasi) }}" class="btn btn-sm btn-danger">Tolak</a>
                       </td>                      
                     </tr>
 
@@ -138,7 +140,7 @@
                       </div>
                       <!-- End modal hapus -->
 
-                      <!-- Start modal publish -->
+                    <!-- Start modal publish -->
                     <div
                         class="modal fade text-left"
                         id="mdpublish{{$data->id_inovasi}}"
