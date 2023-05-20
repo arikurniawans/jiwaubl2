@@ -45,6 +45,7 @@ Route::get('/masterproduk/create', [MProdukController::class, 'getCreate'])->nam
 Route::post('/masterproduk/store', [MProdukController::class, 'store'])->name('masterproduk/store')->middleware('auth');
 Route::post('/masterproduk/update', [MProdukController::class, 'update'])->name('masterproduk/update')->middleware('auth');
 Route::post('/masterproduk/destroy', [MProdukController::class, 'destroy'])->name('masterproduk/destroy')->middleware('auth');
+Route::post('/masterproduk/publish', [MProdukController::class, 'publish'])->name('masterproduk/publish')->middleware('auth');
 Route::get('/masterproduk/edit/{id}', [MProdukController::class, 'getEdit'])->middleware('auth');
 Route::get('/masterproduk/detail/{id}', [MProdukController::class, 'getShow'])->middleware('auth');
 

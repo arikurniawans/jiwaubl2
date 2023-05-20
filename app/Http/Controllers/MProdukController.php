@@ -233,6 +233,26 @@ class MProdukController extends Controller
         }
 
     }
+
+    public function publish(Request $request)
+    {
+        $produk = DB::table('inovasi_tb')->where('id_inovasi', $request->post('id'))->get();
+
+        $data = array(
+            'status_inovasi' => '1',
+            'updated_at' => Carbon::now()->toDateTimeString()
+        );
+
+        $ubah = DB::table('inovasi_tb')->where('id_inovasi', $request->post('id'))->update($data);
+        if($ubah) {
+            Session::flash('success','Berhasil publish master data inovasi (Produk)');
+            return redirect('masterproduk');
+        }else{
+            //DB::rollback();
+            Session::flash('fail','Gagal publish master data inovasi (Produk)');
+            return redirect('masterproduk');
+        }
+    }
     
 
 }
