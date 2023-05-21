@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="{{asset('public/template/back/extensions/sweetalert2/sweetalert2.min.css') }}"/>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{asset('public/template/back/extensions/choices.js/public/assets/styles/choices.css') }}"/>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
 
     <!-- {% block styles %}{% endblock %} -->
 </head>
@@ -63,6 +64,8 @@
     <script src="{{asset('public/template/back/static/js/pages/sweetalert2.js') }}"></script>
     <script src="https://cdn.tiny.cloud/1/conh6akldvf0pu23ph6dyjniwgm3w4qyjjnmdpqblain7fhc/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <!-- {% endif %} -->
     @stack('lib-js')
 

@@ -123,13 +123,13 @@
 
                 <ul class="submenu">
                   <li class="submenu-item">
-                    <a href="extra-component-avatar.html" class="submenu-link"
+                    <a href="{{route('transaksiproduk')}}" class="submenu-link"
                       >Transaksi Produk</a
                     >
                   </li>
 
                   <li class="submenu-item">
-                    <a href="extra-component-divider.html" class="submenu-link"
+                    <a href="{{route('transaksijasa')}}" class="submenu-link"
                       >Transaksi Jasa</a
                     >
                   </li>

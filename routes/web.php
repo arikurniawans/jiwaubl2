@@ -58,3 +58,6 @@ Route::get('/masterjasa', [MJasaController::class, 'getIndex'])->name('masterjas
 Route::get('/masterjasa/create', [MJasaController::class, 'getCreate'])->name('create')->middleware('auth');
 Route::post('/masterjasa/store', [MJasaController::class, 'store'])->name('masterjasa/store')->middleware('auth');
 // Route::get('/masterjasa/detail/{id}', [MJasaController::class, 'getShow'])->middleware('auth');
+
+Route::get('/transaksiproduk', [ReportTransaksiController::class, 'getIndex'])->name('transaksiproduk')->middleware('auth');
+Route::get('/transaksijasa', [ReportTransaksiController::class, 'getIndexJasa'])->name('transaksijasa')->middleware('auth');
