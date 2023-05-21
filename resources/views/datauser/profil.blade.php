@@ -107,20 +107,43 @@
                         role="tabpanel"
                         aria-labelledby="profile-tab"
                       >
-                        Integer interdum diam eleifend metus lacinia, quis
-                        gravida eros mollis. Fusce non sapien sit amet magna
-                        dapibus ultrices. Morbi tincidunt magna ex, eget
-                        faucibus sapien bibendum non. Duis a mauris ex. Ut
-                        finibus risus sed massa mattis porta. Aliquam sagittis
-                        massa et purus efficitur ultricies. Integer pretium
-                        dolor at sapien laoreet ultricies. Fusce congue et lorem
-                        id convallis. Nulla volutpat tellus nec molestie
-                        finibus. In nec odio tincidunt eros finibus ullamcorper.
-                        Ut sodales, dui nec posuere finibus, nisl sem aliquam
-                        metus, eu accumsan lacus felis at odio. Sed lacus quam,
-                        convallis quis condimentum ut, accumsan congue massa.
-                        Pellentesque et quam vel massa pretium ullamcorper vitae
-                        eu tortor.
+                      <br/>
+                      <form class="form form-horizontal" method="post" action="{{route('profil/changepassword')}}">
+                      @csrf
+                        <div class="form-body">
+                          <div class="row">
+                            <div class="col-md-4">
+                              <label for="password-horizontal">Ketikan Password Baru</label>
+                            </div>
+                            <div class="col-md-8 input-group">
+                              <input type="password" class="form-control" name="newpassword" id="newpassword" placeholder="Ketikan Password Baru">
+                              <button class="btn btn-primary" type="button">
+                                <i class="bi bi-eye-slash" aria-hidden="true" id="togglePassword"></i>
+                              </button>
+                            </div>
+                            <div class="col-md-4" style="margin-top:10px;">
+                              <label for="password-horizontal">Ketikan Ulang Password</label>
+                            </div>
+                            <div class="col-md-8 input-group">
+                              <input type="password" class="form-control" name="repassword" id="repassword" placeholder="Ketikan Ulang Password">
+                              <button class="btn btn-primary" type="button">
+                                <i class="bi bi-eye-slash" aria-hidden="true" id="togglePassword2"></i>
+                              </button>
+                            </div>
+                            <span id="message"></span>
+                            
+                            <div class="col-sm-12 d-flex justify-content-end" style="margin-top:20px;">
+                              <button type="submit" class="btn btn-primary me-1 mb-1" id="btnsimpan">
+                                Simpan Perubahan Data
+                              </button>
+                              <button type="reset" class="btn btn-light-secondary me-1 mb-1">
+                                Batal
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+
                       </div>
                       <div
                         class="tab-pane fade"
@@ -128,15 +151,30 @@
                         role="tabpanel"
                         aria-labelledby="contact-tab"
                       >
-                        <p class="mt-2">
-                          Duis ultrices purus non eros fermentum hendrerit.
-                          Aenean ornare interdum viverra. Sed ut odio velit.
-                          Aenean eu diam dictum nibh rhoncus mattis quis ac
-                          risus. Vivamus eu congue ipsum. Maecenas id
-                          sollicitudin ex. Cras in ex vestibulum, posuere orci
-                          at, sollicitudin purus. Morbi mollis elementum enim,
-                          in cursus sem placerat ut.
-                        </p>
+                      <br/>
+                      <form class="form form-horizontal" method="post" action="{{route('profil/changeprofil')}}" enctype="multipart/form-data">
+                      @csrf
+                        <div class="form-body">
+                          <div class="row">
+                          <div class="form-group">
+                            <label for="readonlyInput">Unggah Foto Profil <font color="red">*</font></label>
+                            <input class="form-control" type="file" id="formFile" name="gambar" accept="image/png, image/jpeg, image/jpg, image/gif" required onchange="loadFile(event)">
+                            </br>
+                            <img id="output" src="{{ asset('public/storages/profil') }}/{{Auth::user()->pasfoto}}" class="img-thumbnail" alt="Pasfoto" width="204" height="136">
+                          </div>
+                            
+                            <div class="col-sm-12 d-flex justify-content-end" style="margin-top:20px;">
+                              <button type="submit" class="btn btn-primary me-1 mb-1" id="btnsimpan3">
+                                Simpan Perubahan Data
+                              </button>
+                              <button type="reset" class="btn btn-light-secondary me-1 mb-1">
+                                Batal
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+
                       </div>
                     </div>
                     
@@ -150,12 +188,12 @@
 					<div class="card">
 						<div class="card-body">
 							<div class="d-flex flex-column align-items-center text-center">
-              <img src="" class="card-img-top img-fluid" alt="singleminded">
+              <img src="{{ asset('public/storages/profil') }}/{{Auth::user()->pasfoto}}" class="card-img-top img-fluid" alt="singleminded">
 							</div>
 							<hr class="my-4">
 							<ul class="list-group list-group-flush">
 								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-									<h6 class="mb-0 align-items-center text-center">Gambar Inovasi (Produk)</h6>
+									<h6 class="mb-0 align-items-center text-center">Foto Profil Pengguna</h6>
 								</li>
 							</ul>
 						</div>
@@ -164,8 +202,75 @@
         
 			</div>
 		</div>
+    @endsection
 	</div>
 @endsection
-          
-        </div>
-@endsection
+
+@push('lib-js')
+
+<script type="text/javascript">
+const togglePassword = document.querySelector("#togglePassword");
+const togglePassword2 = document.querySelector("#togglePassword2");
+const password = document.querySelector("#newpassword");
+const repassword = document.querySelector("#repassword");
+$('#btnsimpan').prop('disabled', true);
+
+        togglePassword.addEventListener("click", function () {
+            // toggle the type attribute
+            const type = password.getAttribute("type") === "password" ? "text" : "password";
+            password.setAttribute("type", type);
+            
+            // toggle the icon
+            this.classList.toggle("bi-eye");
+        });
+
+        togglePassword2.addEventListener("click", function () {
+            // toggle the type attribute
+            const type = repassword.getAttribute("type") === "password" ? "text" : "password";
+            repassword.setAttribute("type", type);
+            
+            // toggle the icon
+            this.classList.toggle("bi-eye");
+        });
+
+    $(() => {
+			$('#newpassword, #repassword').on('keyup', function () {
+				if ($('#newpassword').val() == "" && $('#repassword').val() == "") {
+					$('#btnsimpan').prop('disabled', true);
+					$('#message').hide();
+				} else if ($('#newpassword').val() == $('#repassword').val()) {
+					$('#btnsimpan').prop('disabled', false);
+					$('#message').show().html('<b>Password Match</b>').css('color', 'green');
+				} else {
+					$('#btnsimpan').prop('disabled', true);
+					$('#message').show().html('<b>Password do not match !</b>').css('color', 'red');
+				}
+			});
+		});
+
+    var loadFile = function(event) {
+    var output = document.getElementById('output');
+    output.src = URL.createObjectURL(event.target.files[0]);
+    output.onload = function() {
+      URL.revokeObjectURL(output.src) // free memory
+    }
+  };
+
+  @if(session('success'))
+	 Swal2.fire({
+	  icon: "success",
+	  title: "Success",
+	  text: "{{session('success')}}"
+	});
+ @endif
+
+ @if(session('fail'))
+	 Swal2.fire({
+	  icon: "success",
+	  title: "Success",
+	  text: "{{session('fail')}}"
+	});
+ @endif
+
+</script>
+@endpush

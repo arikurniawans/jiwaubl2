@@ -141,7 +141,7 @@
               
               <li class="sidebar-item">
                 <a
-                  href="https://zuramai.github.io/mazer/docs"
+                  href="{{route('profil')}}"
                   class="sidebar-link"
                 >
                   <i class="icon dripicons dripicons-user"></i>

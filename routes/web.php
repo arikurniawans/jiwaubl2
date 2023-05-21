@@ -63,3 +63,5 @@ Route::get('/transaksiproduk', [ReportTransaksiController::class, 'getIndex'])->
 Route::get('/transaksijasa', [ReportTransaksiController::class, 'getIndexJasa'])->name('transaksijasa')->middleware('auth');
 
 Route::get('/profil', [UserController::class, 'getIndex'])->name('profil')->middleware('auth');
+Route::post('/profil/changepassword', [UserController::class, 'change'])->name('profil/changepassword')->middleware('auth');
+Route::post('/profil/changeprofil', [UserController::class, 'changeprofil'])->name('profil/changeprofil')->middleware('auth');

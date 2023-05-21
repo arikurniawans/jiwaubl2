@@ -226,26 +226,26 @@ class UserController extends Controller
     public function change(Request $request)
     {        
         $validator = Validator::make($request->all(), [ // <---
-            'password' => 'required',
-            'retypepassword' => 'required'
+            'newpassword' => 'required',
+            'repassword' => 'required'
         ]);
 
         if($validator->fails()) {
              return Redirect::back()->withErrors($validator);
         }else{
 
-            if($request->post('password') == $request->post('retypepassword')){
+            if($request->post('newpassword') == $request->post('repassword')){
                 $data = array(
-                    'password' => \Hash::make($request->post('password'))
+                    'password' => \Hash::make($request->post('newpassword'))
                 );
                         
                 $simpan = DB::table('users')->where('id', Auth::user()->id)->update($data);
                 if($simpan) {
-                    Session::flash('success','Password berhasil di ubah, ada akan di arahkan ke laman login kembali');
+                    Session::flash('success','Password berhasil di ubah, silahkan login kembali');
                     return redirect('profil');
                 }else{
                     //DB::rollback();
-                    Session::flash('fail','Gagal menambahkan daftar events');
+                    Session::flash('fail','Gagal mengubah password');
                     return redirect('profil');
                 }
             }else{
@@ -272,12 +272,12 @@ class UserController extends Controller
 
             if ($files = $request->file('gambar')) {
                 if($users[0]->pasfoto != 'user-photo.png'){
-                    unlink(public_path('storages/pasfotos/'.$users[0]->pasfoto));
+                    unlink(public_path('storages/profil/'.$users[0]->pasfoto));
                 }                
                 //store file into document folder
                 $image = $request->file('gambar');
                 $new_name = rand() . '.' . $image->getClientOriginalExtension();
-                $image->move(public_path('storages/pasfotos/'), $new_name);
+                $image->move(public_path('storages/profil/'), $new_name);
 
                 $data = array(
                     'pasfoto' => $new_name
@@ -285,11 +285,12 @@ class UserController extends Controller
                         
                 $simpan = DB::table('users')->where('id', $id)->update($data);
                 if($simpan) {
-                    Session::flash('successprofil','Berhasil mengubah foto profil');
+                    Session::flash('success','Berhasil mengubah foto profil');
                     return redirect('profil');
                 }else{
                     //DB::rollback();
-                    return Redirect::back()->withErrors('Gagal mengubah foto profil');
+                    Session::flash('fail','Gagal mengubah foto profil');
+                    return redirect('profil');
                 }
 
             }
