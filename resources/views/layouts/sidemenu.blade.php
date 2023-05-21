@@ -144,7 +144,7 @@
                   href="https://zuramai.github.io/mazer/docs"
                   class="sidebar-link"
                 >
-                  <i class="bi bi-life-preserver"></i>
+                  <i class="icon dripicons dripicons-user"></i>
                   <span>Setting Profil</span>
                 </a>
               </li>

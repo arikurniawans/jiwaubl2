@@ -66,7 +66,7 @@
                           <tr>
                               <td><b>Catatan Perbaikan</b></td>
                               <td><b>:</b></td>
-                              <td>@if($produk[0]->catatan == NULL) (Tidak ada catatan) @else {{$produk[0]->catatan}} @endif</td>
+                              <td>@if($produk[0]->catatan == NULL) (Tidak ada catatan) @else {!! html_entity_decode($produk[0]->catatan) !!} @endif</td>
                           </tr>
                           <tr>
                               <td><b>Bidang / Jenis Inovasi</b></td>

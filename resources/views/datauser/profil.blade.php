@@ -1,224 +1,171 @@
 @extends('layouts.template')
-@section('content-header')
-<section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>{{$title}}</h1>
-          </div>
+@section('page-heading')
+<div class="page-heading">
+          <!-- <h3>{{$title}} PPIK</h3> -->
         </div>
-      </div><!-- /.container-fluid -->
-</section>
 @endsection
 
-@section('content')
-<section class="content">
-<div class="row">
-	<div class="col-lg-9">
-
-		<div class="card card-primary card-outline card-outline-tabs">
-              <div class="card-header p-0 border-bottom-0">
-                <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
-                  <li class="nav-item">
-                    <a class="nav-link active" id="custom-tabs-four-home-tab" data-toggle="pill" href="#custom-tabs-four-home" role="tab" aria-controls="custom-tabs-four-home" aria-selected="true">Data Personal</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" id="custom-tabs-four-profile-tab" data-toggle="pill" href="#custom-tabs-four-profile" role="tab" aria-controls="custom-tabs-four-profile" aria-selected="false">Ubah Password</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" id="custom-tabs-four-messages-tab" data-toggle="pill" href="#custom-tabs-four-messages" role="tab" aria-controls="custom-tabs-four-messages" aria-selected="false">Ubah Foto Profil</a>
-                  </li>
-                </ul>
+@section('page-content')
+<div class="page-content">
+<div class="page-title">
+            <div class="row">
+              <div class="col-12 col-md-6 order-md-1 order-last">
+                <h3>{{$title}}</h3>
+                <p class="text-subtitle text-muted">
+                {{$testVariable}}
+                </p>
               </div>
-              <div class="card-body">
-                <div class="tab-content" id="custom-tabs-four-tabContent">
-                  <div class="tab-pane fade show active" id="custom-tabs-four-home" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
-                     
-                     <table class="table table-hover">
-                          <tr>
-                              <td style="table-layout: fixed; width: 150px;"><b>Nama Lengkap</b></td>
-                              <td><b>:</b></td>
-                              <td style="padding-right: 450px;">@if(Auth::user()->name == '') <i><font color="red">(Belum di isi)</font></i> @else {{Auth::user()->name}} @endif</td>
-                          </tr>
-                          <tr>
-                              <td><b>Jenis Kelamin</b></td>
-                              <td><b>:</b></td>
-                              <td>@if(Auth::user()->jenkel == '') <i><font color="red">(Belum di isi)</font></i> @else @if(Auth::user()->jenkel == 'L') Laki-laki @elseif(Auth::user()->jenkel == 'P') Perempuan @endif @endif</td>
-                          </tr>
-                          <tr>
-                              <td><b>Tanggal Lahir</b></td>
-                              <td><b>:</b></td>
-                              <td>@if(Auth::user()->tgl_lahir == '') <i><font color="red">(Belum di isi)</font></i> @else {{Auth::user()->tgl_lahir}} @endif</td>
-                          </tr>
-                          <tr>
-                              <td><b>Email</b></td>
-                              <td><b>:</b></td>
-                              <td>@if(Auth::user()->email == '') <i><font color="red">(Belum di isi)</font></i> @else {{Auth::user()->email}} @endif</td>
-                          </tr>
-                          <tr>
-                              <td><b>HP</b></td>
-                              <td><b>:</b></td>
-                              <td>@if(Auth::user()->nohp == '') <i><font color="red">(Belum di isi)</font></i> @else {{Auth::user()->nohp}} @endif</td>
-                          </tr>
-                          <tr>
-                              <td><b>Alamat</b></td>
-                              <td><b>:</b></td>
-                              <td>@if(Auth::user()->alamat == '') <i><font color="red">(Belum di isi)</font></i> @else {{Auth::user()->alamat}} @endif</td>
-                          </tr>
-                     </table>
+              <div class="col-12 col-md-6 order-md-2 order-first">
+                <nav
+                  aria-label="breadcrumb"
+                  class="breadcrumb-header float-start float-lg-end"
+                >
+                  <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                      <a href="{{ $breadcrumb[0]['url'] }}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                      <a href="{{ $breadcrumb[1]['url'] }}">Master Inovasi (Produk)</a>
+                    </li>
+                  </ol>
+                </nav>
+              </div>
+            </div>
+          </div>
 
-                  </div>
-                  <div class="tab-pane fade" id="custom-tabs-four-profile" role="tabpanel" aria-labelledby="custom-tabs-four-profile-tab">
-
-                  <form method="post" action="{{route('profil/changepassword')}}">
-                    @csrf
-                  <div class="form-group row">
-                    <label for="inputPassword3" class="col-sm-2 col-form-label">Password Baru</label>
-                    <div class="col-sm-10">
-                      <input type="password" class="form-control" id="password" name="password" autocomplete="false" placeholder="Ketikan Password Baru" oninput="check()">
-                    </div>
-                  </div>
-                  <div class="form-group row">
-                    <label for="inputPassword3" class="col-sm-2 col-form-label">Retype Pass</label>
-                    <div class="col-sm-10">
-                      <input type="password" class="form-control" id="retypepassword" name="retypepassword" autocomplete="false" placeholder="Ketikan Ulang Password Baru" oninput="check()">
-                      <span id="message"></span>
+          @section('container')
+<div class="container">
+		<div class="main-body">
+			<div class="row">
+      <div class="col-lg-8">
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="card">
+								<div class="card-body">
+									<h5 class="d-flex align-items-center mb-3">Detail Data Pengguna</h5>
+                  
+                  <ul class="nav nav-tabs" id="myTab" role="tablist">
+                      <li class="nav-item" role="presentation">
+                        <a
+                          class="nav-link active"
+                          id="home-tab"
+                          data-bs-toggle="tab"
+                          href="#home"
+                          role="tab"
+                          aria-controls="home"
+                          aria-selected="true"
+                          >Ubah Data Personal</a
+                        >
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <a
+                          class="nav-link"
+                          id="profile-tab"
+                          data-bs-toggle="tab"
+                          href="#profile"
+                          role="tab"
+                          aria-controls="profile"
+                          aria-selected="false"
+                          >Ubah Password</a
+                        >
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <a
+                          class="nav-link"
+                          id="contact-tab"
+                          data-bs-toggle="tab"
+                          href="#contact"
+                          role="tab"
+                          aria-controls="contact"
+                          aria-selected="false"
+                          >Ubah Foto Profil</a
+                        >
+                      </li>
+                    </ul>
+                    <div class="tab-content" id="myTabContent">
+                      <div
+                        class="tab-pane fade show active"
+                        id="home"
+                        role="tabpanel"
+                        aria-labelledby="home-tab"
+                      >
+                        <p class="my-2">
+                          Lorem ipsum dolor sit amet, consectetur adipiscing
+                          elit. Nulla ut nulla neque. Ut hendrerit nulla a
+                          euismod pretium. Fusce venenatis sagittis ex efficitur
+                          suscipit. In tempor mattis fringilla. Sed id tincidunt
+                          orci, et volutpat ligula. Aliquam sollicitudin
+                          sagittis ex, a rhoncus nisl feugiat quis. Lorem ipsum
+                          dolor sit amet, consectetur adipiscing elit. Nunc
+                          ultricies ligula a tempor vulputate. Suspendisse
+                          pretium mollis ultrices.
+                        </p>
+                      </div>
+                      <div
+                        class="tab-pane fade"
+                        id="profile"
+                        role="tabpanel"
+                        aria-labelledby="profile-tab"
+                      >
+                        Integer interdum diam eleifend metus lacinia, quis
+                        gravida eros mollis. Fusce non sapien sit amet magna
+                        dapibus ultrices. Morbi tincidunt magna ex, eget
+                        faucibus sapien bibendum non. Duis a mauris ex. Ut
+                        finibus risus sed massa mattis porta. Aliquam sagittis
+                        massa et purus efficitur ultricies. Integer pretium
+                        dolor at sapien laoreet ultricies. Fusce congue et lorem
+                        id convallis. Nulla volutpat tellus nec molestie
+                        finibus. In nec odio tincidunt eros finibus ullamcorper.
+                        Ut sodales, dui nec posuere finibus, nisl sem aliquam
+                        metus, eu accumsan lacus felis at odio. Sed lacus quam,
+                        convallis quis condimentum ut, accumsan congue massa.
+                        Pellentesque et quam vel massa pretium ullamcorper vitae
+                        eu tortor.
+                      </div>
+                      <div
+                        class="tab-pane fade"
+                        id="contact"
+                        role="tabpanel"
+                        aria-labelledby="contact-tab"
+                      >
+                        <p class="mt-2">
+                          Duis ultrices purus non eros fermentum hendrerit.
+                          Aenean ornare interdum viverra. Sed ut odio velit.
+                          Aenean eu diam dictum nibh rhoncus mattis quis ac
+                          risus. Vivamus eu congue ipsum. Maecenas id
+                          sollicitudin ex. Cras in ex vestibulum, posuere orci
+                          at, sollicitudin purus. Morbi mollis elementum enim,
+                          in cursus sem placerat ut.
+                        </p>
+                      </div>
                     </div>
                     
-                  </div>
-                  <div class="form-group row">
-                    <div class="offset-sm-2 col-sm-10">
-                      <button type="submit" class="btn btn-info">Simpan Perubahan Password</button>                   
-                    </div>
-                  </div>
-                </form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 
-                  </div>
-                  <div class="tab-pane fade" id="custom-tabs-four-messages" role="tabpanel" aria-labelledby="custom-tabs-four-messages-tab">
-                     <form method="post" action="{{route('profil/changeprofil')}}" enctype="multipart/form-data">
-                    @csrf
-                     <div class="form-group">
-                            <label>Foto Profil<font size="2" color="red">*) Max. upload 2.48 MB</font></label>
-                            <div class="input-group">
-                          <div class="custom-file">
-                            <input type="file" name="gambar" id="exampleInputFile" required accept=".gif,.jpg,.jpeg,.png" onchange="readURL(this);">
-                            <button type="submit" class="btn btn-info" style="margin-bottom:90px; margin-left:-270px; margin-top: 200px;">Simpan Perubahan</button>
-                          </div>
-
-                          <img id="blah" src="{{ asset('public/no-image.png') }}" class="img-thumbnail" alt="Pasfoto" width="204" height="136">
-                          </div>
-                      </div>
-                    </form>
-
-                  </div>
-                </div>
-              </div>
-              <!-- /.card -->
-            </div>
-
-  	</div>
-
-  	<div class="col-md-3">
-            <div class="sticky-top mb-3">
-              <div class="card">
-                <div class="card-header">
-                  <h4 class="card-title">Foto Pengguna</h4>
-                </div>
-                <div class="card-body">
-                  <!-- the events -->
-                  <center><img id="blah" src="@if(Auth::user()->pasfoto == 'user-photo.png') {{ asset('public/user-photo.png') }} @else {{ asset('public/storages/pasfotos') }}/{{Auth::user()->pasfoto}} @endif" class="img-thumbnail" alt="Pasfoto" width="204" height="136"></center> 
-                </div>
-                <!-- /.card-body -->
-              </div>
-              <!-- /.card --
-            </div>
-          </div>
-  </div> <!-- end row -->
-
-    </section>
-
-    
+				<div class="col-lg-4">
+					<div class="card">
+						<div class="card-body">
+							<div class="d-flex flex-column align-items-center text-center">
+              <img src="" class="card-img-top img-fluid" alt="singleminded">
+							</div>
+							<hr class="my-4">
+							<ul class="list-group list-group-flush">
+								<li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+									<h6 class="mb-0 align-items-center text-center">Gambar Inovasi (Produk)</h6>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+        
+			</div>
+		</div>
+	</div>
 @endsection
-
-@push('lib-js')
-<script type="text/javascript">
-
-function check() {
-  var password = document.getElementById('password').value;
-  var retype = document.getElementById('retypepassword').value;
-  // console.log(password+" - "+retype);
-  if(password == retype){
-      document.getElementById('message').style.color = 'green';
-      document.getElementById('message').innerHTML = '<b>Password sama</b>';
-  }else{
-      document.getElementById('message').style.color = 'red';
-      document.getElementById('message').innerHTML = '<b>Password tidak sama !</b>';
-  }
-  // if (document.getElementById('password').value ==
-  //   document.getElementById('retypepassword').value) {
-  //   document.getElementById('message').style.color = 'green';
-  //   document.getElementById('message').innerHTML = 'matching';
-  // } else {
-  //   document.getElementById('message').style.color = 'red';
-  //   document.getElementById('message').innerHTML = 'not matching';
-  
-}
-
- @if(session('success'))
-   Swal.fire({
-    type: 'success',
-    title: 'Success',
-    text: '{{session('success')}}'
-  }).then(function() {
-    window.location = "{{route('loginpage')}}";
-});
- @endif
-
- @if(session('successprofil'))
-   Swal.fire({
-    type: 'success',
-    title: 'Success',
-    text: '{{session('successprofil')}}'
-  })
- @endif
-
-@if($errors->any())
-    
-  Swal.fire({
-    type: 'warning',
-    title: 'Oops...',
-    text: '{{ implode('', $errors->all(':message')) }}'
-  });
-@endif
-
-function konfirm(){
-
-  Swal.fire({
-                title: "Perhatian !",
-                text: "Proses ini akan mengarahkan anda ke laman login kembali, apakah anda yakin melakukan perubahan password ?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonText: "Ya, ubah !",
-                cancelButtonText: "Tidak",
-                reverseButtons: true
-            }).then(function(result) {
-                // console.log('Data:'+id);
-                if (result.value) {
-                    return true;
-                }
-            });
-
-}
-
- function readURL(input) {
-    if (input.files && input.files[0]) {
-        var reader = new FileReader();
-          reader.onload = function (e) {
-              $('#blah').attr('src', e.target.result);
-    }
-              reader.readAsDataURL(input.files[0]);
-        }
- }
-
-</script>
-@endpush
+          
+        </div>
+@endsection
