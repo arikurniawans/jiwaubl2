@@ -89,7 +89,9 @@
                     </div>
                     <div class="form-group">
                       <label for="readonlyInput">Unggah Foto Inovasi (jasa) <font color="red">*</font></label>
-                      <input class="form-control" type="file" id="formFile" name="gambar" accept="image/png, image/jpeg, image/jpg, image/gif" required>
+                      <input class="form-control" type="file" id="formFile" name="gambar" accept="image/png, image/jpeg, image/jpg, image/gif" onchange="loadFile(event)" required>
+                      </br>
+                      <img id="output" src="{{ asset('public/no-image.png') }}" class="img-thumbnail" alt="Pasfoto" width="204" height="136">
                     </div>
                     
                   </div>
@@ -116,7 +118,7 @@
 @push('lib-js')
 <script type="text/javascript">
 
- @if(session('fail'))
+@if(session('fail'))
 	 Swal.fire({
 	  type: 'error',
 	  title: 'Oops...',
@@ -147,6 +149,14 @@ hrg.addEventListener('keyup', function(e)
 		rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
 		return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
 	}
+
+  var loadFile = function(event) {
+    var output = document.getElementById('output');
+    output.src = URL.createObjectURL(event.target.files[0]);
+    output.onload = function() {
+      URL.revokeObjectURL(output.src) // free memory
+    }
+  };
 
 </script>
 @endpush
