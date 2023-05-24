@@ -71,9 +71,72 @@
                           @endif
                       </td>
                       <td>
-                        -
+                      <a href="{{route('masterjasa')}}/detail/{{ base64_encode($data->id_inovasi) }}" class="btn btn-sm btn-primary">Detail</a>
+                      <a href="{{route('masterjasa')}}/edit/{{ base64_encode($data->id_inovasi) }}" class="btn btn-sm btn-info">Edit</a>
+                      <a href="javascript:void(0);" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#backdrop{{$data->id_inovasi}}">Hapus</a>
                       </td>                      
                     </tr>
+
+                    <!-- Start modal hapus -->
+                    <div
+                        class="modal fade text-left"
+                        id="backdrop{{$data->id_inovasi}}"
+                        tabindex="-1"
+                        role="dialog"
+                        aria-labelledby="myModalLabel4"
+                        data-bs-backdrop="false"
+                        aria-hidden="true"
+                      >
+                        <div
+                          class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+                          role="document"
+                        >
+                          <div class="modal-content">
+                            <div class="modal-header" style="background: #dc3545;">
+                              <h4 class="modal-title" id="myModalLabel4">
+                                <font color="#fff">Perhatian !</font>
+                              </h4>
+                              <button
+                                type="button"
+                                class="close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                              >
+                                <i data-feather="x"></i>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                            <form method="post" action="{{route('masterjasa/destroy')}}" enctype="multipart/form-data">
+                            @csrf
+                              <p>
+                                Apakah yakin akan menghapus data berikut ?
+                                <input type="hidden" name="id" value="{{$data->id_inovasi}}"/>
+                              </p>
+                            </div>
+                            <div class="modal-footer">
+                              <button
+                                type="button"
+                                class="btn btn-light-secondary"
+                                data-bs-dismiss="modal"
+                              >
+                                <i class="bx bx-x d-block d-sm-none"></i>
+                                <span class="d-none d-sm-block">Tidak</span>
+                              </button>
+                              <button
+                                type="submit"
+                                class="btn btn-danger ms-1"
+                                data-bs-dismiss="modal"
+                              >
+                                <i class="bx bx-check d-block d-sm-none"></i>
+                                <span class="d-none d-sm-block">Ya, hapus !</span>
+                              </button>
+                            </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- End modal hapus -->
+
                   @endforeach
                     
                   </tbody>

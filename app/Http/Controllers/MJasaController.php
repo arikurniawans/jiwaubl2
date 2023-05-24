@@ -8,6 +8,7 @@ use Redirect; //untuk redirect
 use Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 use Validator;
 
 class MJasaController extends Controller
@@ -104,6 +105,134 @@ class MJasaController extends Controller
 
         }
         
+    }
+
+    public function getShow($id) 
+    {
+        $jasa = DB::table('v_inovasi')->where('id_inovasi', base64_decode($id))->get();
+
+        $data = [
+            'title' => 'Detail Data Master Inovasi (Jasa)',
+            'jasa' => $jasa,
+            'breadcrumb' => [
+                ['url' => 'dashboard' , 'name' => 'Dashboard'],
+                ['url' => 'masterjasa' , 'name' => 'Master Inovasi (Jasa)'],
+                ['url' => '' , 'name' => 'Detail Master Data Inovasi (Jasa)'],
+            ],
+            
+            'testVariable' => 'Detail Master Data Inovasi (Jasa)'
+        ];
+
+        //  dd($produk);
+        return view('datamasterjasa.show', $data);
+    }
+
+
+    public function getEdit($id) 
+    {
+        $jasa = DB::table('v_inovasi')->where('id_inovasi', base64_decode($id))->get();
+        $bidang = DB::table('bidang_tb')->where(array('statusbidang' => 'T', 'jenis_bidang' => '1'))->orderBy('idbidang', 'ASC')->get();
+
+        $data = [
+            'title' => 'Ubah Data Master Inovasi (Jasa)',
+            'jasa' => $jasa,
+            'bidang' => $bidang,
+            'breadcrumb' => [
+                ['url' => 'dashboard' , 'name' => 'Dashboard'],
+                ['url' => 'masterjasa' , 'name' => 'Master Inovasi (Jasa)'],
+                ['url' => '' , 'name' => 'Ubah Master Data Inovasi (Jasa)'],
+            ],
+            
+            'testVariable' => 'Ubah Master Data Inovasi (Jasa)'
+        ];
+
+        //  dd($produk);
+        return view('datamasterjasa.edit', $data);
+    }
+
+    public function update(Request $request)
+    {
+    	$id = $request->post('id');
+    	$jasa = DB::table('inovasi_tb')->where('id_inovasi', $id)->get();
+
+        $validator = Validator::make($request->all(), [ // <---
+            'judul' => 'required',
+            'bidang' => 'required',
+            'deskripsi' => 'required',
+            'harga' => 'required',
+            'gambar'  => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+        ]);
+
+        if($validator->fails()) {
+        	 return Redirect::back()->withErrors($validator);
+        }else{
+
+        	if ($files = $request->file('gambar')) {
+        		unlink(public_path('storages/masterinovasi/jasa/'.$jasa[0]->unggah_dokumen));
+            //store file into document folder
+            $image = $request->file('gambar');
+            $new_name = rand() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('storages/masterinovasi/jasa/'), $new_name);
+
+	    	$data = array(
+	    		'judul' => $request->post('judul'),
+	    		'bidang' => $request->post('bidang'),
+	    		'deskripsi_produk' => $request->post('deskripsi'),
+	    		'harga_produk' => str_replace(".", "", $request->post('harga')),
+	    		'unggah_dokumen' => $new_name,
+                'updated_at' => Carbon::now()->toDateTimeString()
+	    	);
+	            	
+	        $simpan = DB::table('inovasi_tb')->where('id_inovasi', $id)->update($data);
+	        if($simpan) {
+	            Session::flash('success','Berhasil mengubah master data inovasi (Jasa)');
+	            return redirect('masterjasa');
+	        }else{
+	            //DB::rollback();
+	            Session::flash('fail','Gagal mengubah master data inovasi (Jasa)');
+	            return redirect()->back()->withInput();
+	        }
+
+		    }else{
+		    	$data = array(
+                    'judul' => $request->post('judul'),
+                    'bidang' => $request->post('bidang'),
+                    'deskripsi_produk' => $request->post('deskripsi'),
+                    'harga_produk' => str_replace(".", "", $request->post('harga')),
+                    'updated_at' => Carbon::now()->toDateTimeString()
+                );
+                        
+                $simpan = DB::table('inovasi_tb')->where('id_inovasi', $id)->update($data);
+                if($simpan) {
+                    Session::flash('success','Berhasil mengubah master data inovasi (Jasa)');
+                    return redirect('masterjasa');
+                }else{
+                    //DB::rollback();
+                    Session::flash('fail','Gagal mengubah master data inovasi (Jasa)');
+                    return redirect()->back()->withInput();
+                }
+		    }
+
+        }
+        
+    }
+
+    public function destroy(Request $request)
+    {
+        $jasa = DB::table('inovasi_tb')->where('id_inovasi', $request->post('id'))->get();
+    	unlink(public_path('storages/masterinovasi/jasa/'.$jasa[0]->unggah_dokumen));
+
+    	$hapus =  DB::table('inovasi_tb')->where('id_inovasi', $request->post('id'));
+        $hapus->delete();
+        if($hapus) {
+            Session::flash('success','Berhasil menghapus master data inovasi (Jasa)');
+            return redirect('masterjasa');
+        }else{
+            //DB::rollback();
+            Session::flash('fail','Gagal menghapus master data inovasi (Jasa)');
+            return redirect('masterjasa');
+        }
+
     }
     
 }
