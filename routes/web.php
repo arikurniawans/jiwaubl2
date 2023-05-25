@@ -61,6 +61,11 @@ Route::post('/masterjasa/update', [MJasaController::class, 'update'])->name('mas
 Route::post('/masterjasa/destroy', [MJasaController::class, 'destroy'])->name('masterjasa/destroy')->middleware('auth');
 Route::get('/masterjasa/detail/{id}', [MJasaController::class, 'getShow'])->middleware('auth');
 Route::get('/masterjasa/edit/{id}', [MJasaController::class, 'getEdit'])->middleware('auth');
+Route::post('/masterjasa/publish', [MJasaController::class, 'publish'])->name('masterjasa/publish')->middleware('auth');
+Route::post('/masterjasa/notes', [MJasaController::class, 'notes'])->name('masterjasa/notes')->middleware('auth');
+Route::get('/masterjasa/revision/{id}', [MJasaController::class, 'getRevision'])->middleware('auth');
+Route::post('/masterjasa/anulir', [MJasaController::class, 'anulir'])->name('masterjasa/anulir')->middleware('auth');
+Route::get('/masterjasa/rejected/{id}', [MJasaController::class, 'getRejected'])->middleware('auth');
 
 Route::get('/transaksiproduk', [ReportTransaksiController::class, 'getIndex'])->name('transaksiproduk')->middleware('auth');
 Route::get('/transaksijasa', [ReportTransaksiController::class, 'getIndexJasa'])->name('transaksijasa')->middleware('auth');

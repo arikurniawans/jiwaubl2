@@ -74,6 +74,9 @@
                       <a href="{{route('masterjasa')}}/detail/{{ base64_encode($data->id_inovasi) }}" class="btn btn-sm btn-primary">Detail</a>
                       <a href="{{route('masterjasa')}}/edit/{{ base64_encode($data->id_inovasi) }}" class="btn btn-sm btn-info">Edit</a>
                       <a href="javascript:void(0);" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#backdrop{{$data->id_inovasi}}">Hapus</a>
+                      <a href="javascript:void(0);" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#mdpublish{{$data->id_inovasi}}">Publish</a>
+                      <a href="{{route('masterjasa')}}/revision/{{ base64_encode($data->id_inovasi) }}" class="btn btn-sm btn-warning">Perbaikan</a>
+                      <a href="{{route('masterjasa')}}/rejected/{{ base64_encode($data->id_inovasi) }}" class="btn btn-sm btn-danger">Tolak</a>
                       </td>                      
                     </tr>
 

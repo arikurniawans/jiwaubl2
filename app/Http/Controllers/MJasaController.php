@@ -234,5 +234,106 @@ class MJasaController extends Controller
         }
 
     }
+
+    public function publish(Request $request)
+    {
+        $data = array(
+            'status_inovasi' => '1',
+            'updated_at' => Carbon::now()->toDateTimeString()
+        );
+
+        $ubah = DB::table('inovasi_tb')->where('id_inovasi', $request->post('id'))->update($data);
+        if($ubah) {
+            Session::flash('success','Berhasil publish master data inovasi (Produk)');
+            return redirect('masterjasa');
+        }else{
+            //DB::rollback();
+            Session::flash('fail','Gagal publish master data inovasi (Produk)');
+            return redirect('masterjasa');
+        }
+    }
     
+    public function getRevision($id) 
+    {
+        $jasa = DB::table('v_inovasi')->where('id_inovasi', base64_decode($id))->get();
+
+        $data = [
+            'title' => 'Perbaikan Data Master Inovasi (Produk)',
+            'jasa' => $jasa,
+            'breadcrumb' => [
+                ['url' => 'dashboard' , 'name' => 'Dashboard'],
+                ['url' => 'masterjasa' , 'name' => 'Master Inovasi (Produk)'],
+                ['url' => '' , 'name' => 'Perbaikan Master Data Inovasi (Produk)'],
+            ],
+            
+            'testVariable' => 'Perbaikan Master Data Inovasi (Produk)'
+        ];
+
+        //  dd($jasa);
+        return view('datamasterjasa.revision', $data);
+    }
+
+    public function notes(Request $request)
+    {
+ 
+        $data = array(
+            'catatan' => $request->post('catatan'),
+            'status_inovasi' => '2',
+            'updated_at' => Carbon::now()->toDateTimeString()
+        );
+
+        $ubah = DB::table('inovasi_tb')->where('id_inovasi', $request->post('id'))->update($data);
+        if($ubah) {
+            // Session::flash('success','Berhasil publish master data inovasi (Produk)');
+            // return redirect('masterjasa');
+            return response()->json(['message'=>'Berhasil']);
+        }else{
+            //DB::rollback();
+            // Session::flash('fail','Gagal publish master data inovasi (Produk)');
+            // return redirect('masterjasa');
+            return response()->json(['message'=>'Gagal']);
+        }
+    }
+
+    public function getRejected($id) 
+    {
+        $jasa = DB::table('v_inovasi')->where('id_inovasi', base64_decode($id))->get();
+
+        $data = [
+            'title' => 'Anulir Data Master Inovasi (Produk)',
+            'jasa' => $jasa,
+            'breadcrumb' => [
+                ['url' => 'dashboard' , 'name' => 'Dashboard'],
+                ['url' => 'masterjasa' , 'name' => 'Master Inovasi (Produk)'],
+                ['url' => '' , 'name' => 'Anulir Master Data Inovasi (Produk)'],
+            ],
+            
+            'testVariable' => 'Anulir Master Data Inovasi (Produk)'
+        ];
+
+        //  dd($jasa);
+        return view('datamasterjasa.rejected', $data);
+    }
+
+    public function anulir(Request $request)
+    {
+ 
+        $data = array(
+            'catatan' => $request->post('catatan'),
+            'status_inovasi' => '3',
+            'updated_at' => Carbon::now()->toDateTimeString()
+        );
+
+        $ubah = DB::table('inovasi_tb')->where('id_inovasi', $request->post('id'))->update($data);
+        if($ubah) {
+            // Session::flash('success','Berhasil publish master data inovasi (Produk)');
+            // return redirect('masterjasa');
+            return response()->json(['message'=>'Berhasil']);
+        }else{
+            //DB::rollback();
+            // Session::flash('fail','Gagal publish master data inovasi (Produk)');
+            // return redirect('masterjasa');
+            return response()->json(['message'=>'Gagal']);
+        }
+    }
 }
