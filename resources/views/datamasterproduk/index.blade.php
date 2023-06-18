@@ -35,9 +35,11 @@
           </div>
 
           <section class="section">
+          @if(Auth::user()->isAdmin == '0')
           <a href="{{route('masterproduk')}}/create" class="btn btn-flat btn-primary float-sm-right">
               <i class="fa fa-plus" aria-hidden="true"></i> Buat {{ $breadcrumb[1]['name'] }}
           </a><br/></br>
+          @endif
             <div class="card">
               <!-- <div class="card-header">Simple Datatable</div> -->
               <div class="card-body">
@@ -46,6 +48,7 @@
                     <tr>
                       <th>#</th>
                       <th>Juduk Inovasi (Produk)</th>
+                      @if(Auth::user()->isAdmin == '1')<th>Inovator</th>@endif
                       <th>Bidang</th>
                       <th>Harga Produk</th>
                       <th>Status</th>
@@ -58,6 +61,7 @@
                     <tr>
                       <td>{{$no++}}</td>
                       <td>{{$data->judul}}</td>
+                      @if(Auth::user()->isAdmin == '1')<td>{{$data->name}}</td>@endif
                       <td>{{$data->namabidang}}</td>
                       <td>Rp.{{ number_format($data->harga_produk,0,'','.') }}</td>
                       <td>@if($data->status_inovasi == '0')
@@ -71,12 +75,16 @@
                           @endif
                       </td>
                       <td>
+                      @if(Auth::user()->isAdmin == '0')
                       <a href="{{route('masterproduk')}}/detail/{{ base64_encode($data->id_inovasi) }}" class="btn btn-sm btn-primary">Detail</a>
-                      <a href="{{route('masterproduk')}}/edit/{{ base64_encode($data->id_inovasi) }}" class="btn btn-sm btn-info">Edit</a>
-                      <a href="javascript:void(0);" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#backdrop{{$data->id_inovasi}}">Hapus</a>
-                      <a href="javascript:void(0);" class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#mdpublish{{$data->id_inovasi}}">Publish</a>
-                      <a href="{{route('masterproduk')}}/revision/{{ base64_encode($data->id_inovasi) }}" class="btn btn-sm btn-warning">Perbaikan</a>
-                      <a href="{{route('masterproduk')}}/rejected/{{ base64_encode($data->id_inovasi) }}" class="btn btn-sm btn-danger">Tolak</a>
+                      @if($data->status_inovasi == 2)<a href="{{route('masterproduk')}}/edit/{{ base64_encode($data->id_inovasi) }}" class="btn btn-sm btn-info">Edit</a>@endif
+                      @if($data->status_inovasi == 3)<a href="javascript:void(0);" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#backdrop{{$data->id_inovasi}}">Hapus</a>@endif
+                      @elseif(Auth::user()->isAdmin == '1')
+                      <a href="{{route('masterproduk')}}/detail/{{ base64_encode($data->id_inovasi) }}" class="btn btn-sm btn-primary">Detail</a>
+                      <a href="javascript:void(0);" class="btn @if($data->status_inovasi == 1 || $data->status_inovasi == 3) disabled @endif btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#mdpublish{{$data->id_inovasi}}">Publish</a>
+                      <a href="{{route('masterproduk')}}/revision/{{ base64_encode($data->id_inovasi) }}" class="btn @if($data->status_inovasi == 1 || $data->status_inovasi == 3) disabled @endif btn-sm btn-warning">Perbaikan</a>
+                      <a href="{{route('masterproduk')}}/rejected/{{ base64_encode($data->id_inovasi) }}" class="btn @if($data->status_inovasi == 1 || $data->status_inovasi == 3) disabled @endif btn-sm btn-danger">Tolak</a>
+                      @endif
                       </td>                      
                     </tr>
 
@@ -230,6 +238,14 @@
 	  icon: "success",
 	  title: "Success",
 	  text: "{{session('fail')}}"
+	});
+ @endif
+
+ @if(session('warning'))
+	 Swal2.fire({
+	  icon: "warning",
+	  title: "Perhatian !",
+	  text: "{{session('warning')}}"
 	});
  @endif
 

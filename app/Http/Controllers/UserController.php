@@ -39,25 +39,21 @@ class UserController extends Controller
 
     public function getUser(Request $request) 
     {
-        // $jsonUsers = file_get_contents('https://api.manupakabbadi.com/user');
-        // $users =  json_decode($jsonUsers,true);
-        $users = DB::table('v_users')->whereNotIn('idhak', [0,1])->get();
+        $datauser = DB::table('users')->where('roles', '1')->orderBy('id', 'desc')->get();
 
         $data = [
-            'title' => 'Manajemen Pengguna',
-            'datausers' => $users,
+            'title' => 'Data Inovator',
+            'datauser' => $datauser,
             'breadcrumb' => [
                 ['url' => 'dashboard' , 'name' => 'Dashboard'],
-                ['url' => '/profil/usermanagement' , 'name' => 'Manajemen Pengguna'],
+                ['url' => 'datainovator' , 'name' => 'Data Inovator'],
             ],
             
-            'testVariable' => 'Manajemen Pengguna'
+            'testVariable' => 'Data Inovator'
         ];
-        // print_r($users['data']);
 
          
         return view('datauser.alluser', $data);
-        // dd($mobile);
     }
     
     public function getOperator(Request $request) 

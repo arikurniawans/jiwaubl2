@@ -12,4 +12,16 @@ class HomeController extends Controller
         return view('datahome.index');
         // dd($grafikTransaksi);
     }
+
+    public function getAbout(Request $request) {
+         
+        return view('datahome.about');
+        // dd($grafikTransaksi);
+    }
+
+    public function getContact(Request $request) {
+     
+        return view('datahome.contact');
+        // dd($grafikTransaksi);
+}
 }

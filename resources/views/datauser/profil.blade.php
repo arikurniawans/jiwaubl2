@@ -90,7 +90,7 @@
                         aria-labelledby="home-tab"
                       >
                         <p class="my-2">
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
+                          <!-- Lorem ipsum dolor sit amet, consectetur adipiscing
                           elit. Nulla ut nulla neque. Ut hendrerit nulla a
                           euismod pretium. Fusce venenatis sagittis ex efficitur
                           suscipit. In tempor mattis fringilla. Sed id tincidunt
@@ -98,7 +98,7 @@
                           sagittis ex, a rhoncus nisl feugiat quis. Lorem ipsum
                           dolor sit amet, consectetur adipiscing elit. Nunc
                           ultricies ligula a tempor vulputate. Suspendisse
-                          pretium mollis ultrices.
+                          pretium mollis ultrices. -->
                         </p>
                       </div>
                       <div

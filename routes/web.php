@@ -31,13 +31,20 @@ Route::middleware(['auth', 'admin'])->group(function () {
     'auth' => AuthController::class
 ]);
 
+Route::get('/home', [HomeController::class, 'getIndex'])->name('home');
+Route::get('/about', [HomeController::class, 'getAbout'])->name('about');
+Route::get('/contact', [HomeController::class, 'getContact'])->name('contact');
+
 Route::post('loginaksi', [AuthController::class, 'loginaksi'])->name('loginaksi');
+Route::post('register', [AuthController::class, 'register'])->name('register');
 Route::get('logoutaksi', [AuthController::class, 'logoutaksi'])->name('logoutaksi')->middleware('auth');
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::get('/loginpage', [AuthController::class, 'loginpage'])->name('loginpage');
 
+
 // //Route Dashboard
 Route::get('/dashboard', [DashboardController::class, 'getIndex'])->name('dashboard')->middleware('auth');
+Route::get('/dashboardinovator', [DashboardController::class, 'getDasbor'])->name('dashboardinovator')->middleware('auth');
 
 //Route Setup Values
 Route::get('/masterproduk', [MProdukController::class, 'getIndex'])->name('masterproduk')->middleware('auth');
@@ -71,5 +78,6 @@ Route::get('/transaksiproduk', [ReportTransaksiController::class, 'getIndex'])->
 Route::get('/transaksijasa', [ReportTransaksiController::class, 'getIndexJasa'])->name('transaksijasa')->middleware('auth');
 
 Route::get('/profil', [UserController::class, 'getIndex'])->name('profil')->middleware('auth');
+Route::get('/datainovator', [UserController::class, 'getUser'])->name('datainovator')->middleware('auth');
 Route::post('/profil/changepassword', [UserController::class, 'change'])->name('profil/changepassword')->middleware('auth');
 Route::post('/profil/changeprofil', [UserController::class, 'changeprofil'])->name('profil/changeprofil')->middleware('auth');

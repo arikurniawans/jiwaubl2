@@ -63,16 +63,23 @@
                               <td><b>:</b></td>
                               <td>{{$produk[0]->harga_produk}}</td>
                           </tr>
-                          <tr>
+                          <!-- <tr>
                               <td><b>Catatan Perbaikan</b></td>
                               <td><b>:</b></td>
                               <td>@if($produk[0]->catatan == NULL) (Tidak ada catatan) @else {!! html_entity_decode($produk[0]->catatan) !!} @endif</td>
-                          </tr>
+                          </tr> -->
                           <tr>
                               <td><b>Bidang / Jenis Inovasi</b></td>
                               <td><b>:</b></td>
                               <td>{{$produk[0]->namabidang}} - (@if($produk[0]->jenis_bidang == '0') Produk @elseif($produk[0]->jenis_bidang == '1') Jasa @endif)</td>
                           </tr>
+                          @if(Auth::user()->isAdmin == '1')
+                          <tr>
+                              <td><b>Inovator</b></td>
+                              <td><b>:</b></td>
+                              <td><i class="fa fa-user" aria-hidden="true"></i> {{$produk[0]->name}}<br/><i class="fa fa-envelope" aria-hidden="true"></i> {{$produk[0]->email}}</td>
+                          </tr>
+                          @endif
                      </table>
                      <div class="col-sm-12 d-flex justify-content-end">
                               <a href="{{ route('masterproduk') }}" type="reset" class="btn btn-light-secondary me-1 mb-1">
@@ -102,6 +109,18 @@
 				</div>
         
 			</div>
+
+      <div class="card">
+              <div class="card-header">
+                <h4 class="card-title"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Catatan Pengajuan Anda</h4>
+              </div>
+              <div class="card-body">
+                @if($produk[0]->catatan == NULL) (Tidak ada catatan) @else {!! html_entity_decode($produk[0]->catatan) !!} @endif
+              </div>
+              
+                            
+            </div>
+
 		</div>
 	</div>
 @endsection

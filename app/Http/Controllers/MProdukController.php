@@ -17,7 +17,11 @@ class MProdukController extends Controller
     public function getIndex(Request $request) 
     {
 
-        $produk = DB::table('v_inovasi')->where('jenis_inovasi','produk')->get();
+        if(Auth::user()->isAdmin == '1'){
+            $produk = DB::table('v_inovasi')->where('jenis_inovasi','produk')->get(); 
+        }else if(Auth::user()->isAdmin == '0'){
+            $produk = DB::table('v_inovasi')->where(array('jenis_inovasi' => 'produk', 'id' => Auth::user()->id))->get();
+        }
 
         $data = [
             'title' => 'Daftar Data Master Inovasi (Produk)',
@@ -37,22 +41,30 @@ class MProdukController extends Controller
 
     public function getCreate() 
     {
-        $bidang = DB::table('bidang_tb')->where(array('statusbidang' => 'T', 'jenis_bidang' => '0'))->orderBy('idbidang', 'ASC')->get();
 
-        $data = [
-            'title' => 'Buat Data Master Inovasi (Produk)',
-            'bidang' => $bidang,
-            'breadcrumb' => [
-                ['url' => 'dashboard' , 'name' => 'Dashboard'],
-                ['url' => 'masterproduk' , 'name' => 'Master Inovasi (Produk)'],
-                ['url' => '' , 'name' => 'Buat Master Data Inovasi (Produk)'],
-            ],
+        $produk = DB::table('v_inovasi')->where(array('jenis_inovasi' => 'produk', 'id' => Auth::user()->id))->orderBy('id_inovasi', 'desc')->limit(1)->get();
+        
+        if ($produk[0]->status_inovasi == 1 || $produk[0]->status_inovasi == 3) {
+            $bidang = DB::table('bidang_tb')->where(array('statusbidang' => 'T', 'jenis_bidang' => '0'))->orderBy('idbidang', 'ASC')->get();
+
+            $data = [
+                'title' => 'Buat Data Master Inovasi (Produk)',
+                'bidang' => $bidang,
+                'breadcrumb' => [
+                    ['url' => 'dashboard' , 'name' => 'Dashboard'],
+                    ['url' => 'masterproduk' , 'name' => 'Master Inovasi (Produk)'],
+                    ['url' => '' , 'name' => 'Buat Master Data Inovasi (Produk)'],
+                ],
+                
+                'testVariable' => 'Buat Master Data Inovasi (Produk)'
+            ];
+
             
-            'testVariable' => 'Buat Master Data Inovasi (Produk)'
-        ];
-
-         
-        return view('datamasterproduk.create', $data);
+            return view('datamasterproduk.create', $data);
+        }else{
+            Session::flash('warning','Anda dapat menambahkan pengajuan baru setelah pengajuan sebelumnya ditolak atau di publish oleh tim reviewer JIWAUBL');
+	        return redirect('masterproduk');           
+        }
     }
 
     public function store(Request $request)
@@ -91,7 +103,15 @@ class MProdukController extends Controller
 	    	);
 	            	
 	        $simpan = DB::table('inovasi_tb')->insert($data);
+            $ids = DB::table('inovasi_tb')->orderBy('id_inovasi', 'desc')->first();
+
 	        if($simpan) {
+                $datas = array(
+                    'id_inovasi' => $ids->id_inovasi,
+                    'created_at' => Carbon::now()->toDateTimeString()
+                );
+                $simpantahapan = DB::table('tahapan')->insert($datas);
+
 	            Session::flash('success','Berhasil menambahkan inovasi (produk) baru');
 	            return redirect('masterproduk');
 	        }else{
@@ -223,6 +243,8 @@ class MProdukController extends Controller
     	unlink(public_path('storages/masterinovasi/produk/'.$produk[0]->unggah_dokumen));
 
     	$hapus =  DB::table('inovasi_tb')->where('id_inovasi', $request->post('id'));
+    	$hapustahapan =  DB::table('tahapan')->where('id_inovasi', $request->post('id'));
+
         $hapus->delete();
         if($hapus) {
             Session::flash('success','Berhasil menghapus master data inovasi (Produk)');
@@ -243,7 +265,15 @@ class MProdukController extends Controller
         );
 
         $ubah = DB::table('inovasi_tb')->where('id_inovasi', $request->post('id'))->update($data);
+
         if($ubah) {
+            $datas = array(
+                'id_inovasi' => $request->post('id'),
+                'status_step' => '1',
+                'updated_at' => Carbon::now()->toDateTimeString()
+            );
+            $simpantahapan = DB::table('tahapan')->where('id_inovasi', $request->post('id'))->update($datas);
+
             Session::flash('success','Berhasil publish master data inovasi (Produk)');
             return redirect('masterproduk');
         }else{
@@ -286,6 +316,13 @@ class MProdukController extends Controller
         if($ubah) {
             // Session::flash('success','Berhasil publish master data inovasi (Produk)');
             // return redirect('masterproduk');
+            $datas = array(
+                'id_inovasi' => $request->post('id'),
+                'status_step' => '2',
+                'updated_at' => Carbon::now()->toDateTimeString()
+            );
+            $simpantahapan = DB::table('tahapan')->where('id_inovasi', $request->post('id'))->update($datas);
+
             return response()->json(['message'=>'Berhasil']);
         }else{
             //DB::rollback();
@@ -328,6 +365,13 @@ class MProdukController extends Controller
         if($ubah) {
             // Session::flash('success','Berhasil publish master data inovasi (Produk)');
             // return redirect('masterproduk');
+            $datas = array(
+                'id_inovasi' => $request->post('id'),
+                'status_step' => '3',
+                'updated_at' => Carbon::now()->toDateTimeString()
+            );
+            $simpantahapan = DB::table('tahapan')->where('id_inovasi', $request->post('id'))->update($datas);
+
             return response()->json(['message'=>'Berhasil']);
         }else{
             //DB::rollback();

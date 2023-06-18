@@ -45,13 +45,13 @@
                 <div class="collapse navbar-collapse text-center" id="navbar">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="index.html">Home</a>
+                            <a class="nav-link" href="{{route('home')}}">Home</a>
                         </li>
                         <!-- <li class="nav-item">
                             <a class="nav-link page-scroll" href="#feature">Feature</a>
                         </li> -->
                         <li class="nav-item">
-                            <a class="nav-link" href="about.html">About</a>
+                            <a class="nav-link" href="{{route('about')}}">About</a>
                         </li>
                         <!-- <li class="nav-item">
                             <a class="nav-link" href="service.html">Service</a>
@@ -63,7 +63,7 @@
                             <a class="nav-link page-scroll" href="#pricing">Pricing</a>
                         </li> -->
                         <li class="nav-item">
-                            <a class="nav-link" href="contact.html">Contact</a>
+                            <a class="nav-link" href="{{route('contact')}}">Contact</a>
                         </li>
                     </ul>
                     <a href="{{ route('login') }}" class="btn btn-primary ml-lg-3 primary-shadow">Masuk</a>
@@ -413,7 +413,7 @@
                     <ul class="list-inline text-lg-right text-center footer-menu">
                         <li class="list-inline-item active"><a href="index.html">Home</a></li>
                         <!-- <li class="list-inline-item"><a class="page-scroll" href="#feature">Feature</a></li> -->
-                        <li class="list-inline-item"><a href="about.html">About</a></li>
+                        <li class="list-inline-item"><a href="about.blade.php">About</a></li>
                         <li class="list-inline-item"><a class="page-scroll" href="#team">Team</a></li>
                         <!-- <li class="list-inline-item"><a class="page-scroll" href="#pricing">Pricing</a></li> -->
                         <li class="list-inline-item"><a href="contact.html">Contact</a></li>

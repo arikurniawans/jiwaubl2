@@ -81,12 +81,41 @@
               <li class="sidebar-title">Menu</li>
 
               <li class="sidebar-item active">
-                <a href="{{route('dashboard')}}" class="sidebar-link">
+                <a href="@if(Auth::user()->isAdmin == '1') {{route('dashboard')}} @elseif(Auth::user()->isAdmin == '0') {{route('dashboardinovator')}} @endif" class="sidebar-link">
                   <i class="bi bi-grid-fill"></i>
                   <span>Dashboard</span>
                 </a>
               </li>
 
+              @if(Auth::user()->isAdmin == '1')
+              <li class="sidebar-item has-sub">
+                <a href="#" class="sidebar-link">
+                  <i class="fa fa-pencil-square-o"></i>
+                  <span>Verifikasi Pengajuan</span>
+                </a>
+
+                <ul class="submenu">
+                  <li class="submenu-item">
+                    <a href="{{route('masterproduk')}}" class="submenu-link"
+                      >Pengajuan Produk</a
+                    >
+                  </li>
+
+                  <li class="submenu-item">
+                    <a href="{{route('masterjasa')}}" class="submenu-link"
+                      >Pengajuan Jasa</a
+                    >
+                  </li>
+
+                  <!-- <li class="submenu-item">
+                    <a href="component-badge.html" class="submenu-link"
+                      >Badge</a
+                    >
+                  </li> -->
+
+                </ul>
+              </li>
+              @elseif(Auth::user()->isAdmin == '0')
               <li class="sidebar-item has-sub">
                 <a href="#" class="sidebar-link">
                   <i class="bi bi-stack"></i>
@@ -114,7 +143,19 @@
 
                 </ul>
               </li>
-
+              @endif
+              
+              @if(Auth::user()->isAdmin == '1')
+              <li class="sidebar-item">
+                <a
+                  href="{{route('datainovator')}}"
+                  class="sidebar-link"
+                >
+                  <i class="fa fa-users"></i>
+                  <span>Data Inovator</span>
+                </a>
+              </li>
+              @elseif(Auth::user()->isAdmin == '0')
               <li class="sidebar-item has-sub">
                 <a href="#" class="sidebar-link">
                   <i class="bi bi-collection-fill"></i>
@@ -136,7 +177,8 @@
 
                 </ul>
               </li>
-
+              @endif
+              
               <!-- <li class="sidebar-title">Raise Support</li> -->
               
               <li class="sidebar-item">
