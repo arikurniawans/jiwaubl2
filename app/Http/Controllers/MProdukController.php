@@ -44,9 +44,10 @@ class MProdukController extends Controller
 
         $produk = DB::table('v_inovasi')->where(array('jenis_inovasi' => 'produk', 'id' => Auth::user()->id))->orderBy('id_inovasi', 'desc')->limit(1)->get();
         
-        if ($produk[0]->status_inovasi == 1 || $produk[0]->status_inovasi == 3) {
+        if($produk->isEmpty())
+        {
             $bidang = DB::table('bidang_tb')->where(array('statusbidang' => 'T', 'jenis_bidang' => '0'))->orderBy('idbidang', 'ASC')->get();
-
+    
             $data = [
                 'title' => 'Buat Data Master Inovasi (Produk)',
                 'bidang' => $bidang,
@@ -62,9 +63,29 @@ class MProdukController extends Controller
             
             return view('datamasterproduk.create', $data);
         }else{
-            Session::flash('warning','Anda dapat menambahkan pengajuan baru setelah pengajuan sebelumnya ditolak atau di publish oleh tim reviewer JIWAUBL');
-	        return redirect('masterproduk');           
+            if ($produk[0]->status_inovasi == 1 || $produk[0]->status_inovasi == 3) {
+                $bidang = DB::table('bidang_tb')->where(array('statusbidang' => 'T', 'jenis_bidang' => '0'))->orderBy('idbidang', 'ASC')->get();
+    
+                $data = [
+                    'title' => 'Buat Data Master Inovasi (Produk)',
+                    'bidang' => $bidang,
+                    'breadcrumb' => [
+                        ['url' => 'dashboard' , 'name' => 'Dashboard'],
+                        ['url' => 'masterproduk' , 'name' => 'Master Inovasi (Produk)'],
+                        ['url' => '' , 'name' => 'Buat Master Data Inovasi (Produk)'],
+                    ],
+                    
+                    'testVariable' => 'Buat Master Data Inovasi (Produk)'
+                ];
+    
+                
+                return view('datamasterproduk.create', $data);
+            }else{
+                Session::flash('warning','Anda dapat menambahkan pengajuan baru setelah pengajuan sebelumnya ditolak atau di publish oleh tim reviewer JIWAUBL');
+                return redirect('masterproduk');           
+            }
         }
+        
     }
 
     public function store(Request $request)

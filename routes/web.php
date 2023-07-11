@@ -60,7 +60,6 @@ Route::get('/masterproduk/detail/{id}', [MProdukController::class, 'getShow'])->
 Route::get('/masterproduk/revision/{id}', [MProdukController::class, 'getRevision'])->middleware('auth');
 Route::get('/masterproduk/rejected/{id}', [MProdukController::class, 'getRejected'])->middleware('auth');
 
-
 Route::get('/masterjasa', [MJasaController::class, 'getIndex'])->name('masterjasa')->middleware('auth');
 Route::get('/masterjasa/create', [MJasaController::class, 'getCreate'])->name('create')->middleware('auth');
 Route::post('/masterjasa/store', [MJasaController::class, 'store'])->name('masterjasa/store')->middleware('auth');
@@ -81,3 +80,7 @@ Route::get('/profil', [UserController::class, 'getIndex'])->name('profil')->midd
 Route::get('/datainovator', [UserController::class, 'getUser'])->name('datainovator')->middleware('auth');
 Route::post('/profil/changepassword', [UserController::class, 'change'])->name('profil/changepassword')->middleware('auth');
 Route::post('/profil/changeprofil', [UserController::class, 'changeprofil'])->name('profil/changeprofil')->middleware('auth');
+
+Route::get('/webslider', [SliderController::class, 'getIndex'])->name('webslider')->middleware('auth');
+Route::post('/webslider/change', [SliderController::class, 'change'])->name('webslider/change')->middleware('auth');
+Route::post('/webslider/activate', [SliderController::class, 'activate'])->name('webslider/activate')->middleware('auth');

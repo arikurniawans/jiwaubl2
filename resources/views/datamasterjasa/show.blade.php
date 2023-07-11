@@ -63,11 +63,11 @@
                               <td><b>:</b></td>
                               <td>{{$jasa[0]->harga_produk}}</td>
                           </tr>
-                          <tr>
+                          <!-- <tr>
                               <td><b>Catatan Perbaikan</b></td>
                               <td><b>:</b></td>
                               <td>@if($jasa[0]->catatan == NULL) (Tidak ada catatan) @else {!! html_entity_decode($jasa[0]->catatan) !!} @endif</td>
-                          </tr>
+                          </tr> -->
                           <tr>
                               <td><b>Bidang / Jenis Inovasi</b></td>
                               <td><b>:</b></td>
@@ -102,6 +102,16 @@
 				</div>
         
 			</div>
+      <div class="card">
+              <div class="card-header">
+                <h4 class="card-title"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Catatan Pengajuan Anda</h4>
+              </div>
+              <div class="card-body">
+                @if($jasa[0]->catatan == NULL) (Tidak ada catatan) @else {!! html_entity_decode($produk[0]->catatan) !!} @endif
+              </div>
+              
+                            
+            </div>
 		</div>
 	</div>
 @endsection

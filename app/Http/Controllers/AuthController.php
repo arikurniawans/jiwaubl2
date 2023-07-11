@@ -15,7 +15,8 @@ use Illuminate\Http\Request;
 use Validator;
 use Laravolt\Avatar\Facade as Avatar;
 use Carbon\Carbon;
-
+use App\Mail\MailSend;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -56,6 +57,9 @@ class AuthController extends Controller
 	        $simpan = DB::table('users')->insert($data);
 
 	        if($simpan) {
+
+				Mail::to($request->post('email'))->send(new MailSend($data));
+
 	            Session::flash('success','Berhasil Register');
 	            return redirect('/login');
 	        }else{

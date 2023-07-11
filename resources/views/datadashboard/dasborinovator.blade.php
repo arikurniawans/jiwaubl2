@@ -339,51 +339,226 @@
 										
 									<br/>
 									<div class="timeline">
-										<div class="timeline__row">
-											<div class="timeline__row_icon">
-												<div class="timeline-icon success">
-													<i class="fa fa-check"></i>
+										
+									@if($datatahapan2->isEmpty())
+										<center><img src="{{ asset('public/') }}/nodata.png" class="img-rounded" alt="No Data" width="200px" height="200px"><br>
+												<br/>Belum ada dokumen pengajuan
+										</center>
+										@else
+										
+										@foreach($datatahapan2 as $data2)
+
+										@if($data2->status_step == '0')
+											<div class="timeline__row">
+												<div class="timeline__row_icon">
+													<div class="timeline-icon primary">
+														<i class="fa fa-paper-plane"></i>
+													</div>
+												</div>
+												<div class="timeline__row_content">
+													<span class="badge bg-primary">@if(date('d/m/Y', strtotime($data2->tgl)) == date('d/m/Y')) Hari  Ini @else {{date('d/m/Y', strtotime($data2->nextdate))}} @endif</span>
+													<div class="timeline__row_content_desc">
+														<h5>Proses Pemeriksaan Dokumen Inovasi Jasa</h5>
+														<p>Terima kasih telah melakukan pengajuan komersialisasi inovasi jasa. Mohon menunggu, saat ini tim reviewer JIWAUBL sedang meninjau kelengkapan dokumen pengajuan anda.</p>
+														<a href="{{route('masterjasa')}}/detail/{{ base64_encode($data2->idinovasi) }}" class="btn btn-outline-primary rounded-pill">Lihat Detail Pengajuan</a>
+													</div>
 												</div>
 											</div>
-											<div class="timeline__row_content">
-												<span class="badge bg-primary">Today</span>
-												<div class="timeline__row_content_desc">
-													<h5>Lorem Ipsum Successful</h5>
-													<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Placeat fugit dolorem explicabo necessitatibus, vel reprehenderit.</p>
-													<a href="#!">View more</a>
+
+											<div																																																																																																																																												 class="timeline__row">
+												<div class="timeline__row_icon">
+													<div class="timeline-icon secondary" style="border: solid #ced4da; color: #ced4da;">
+														<i class="fa fa-lock"></i>
+													</div>
 												</div>
+												<div class="timeline__row_content">												
+													<div class="timeline__row_content_desc" style="background-color: #e4eaf0;">
+														<p>Silakan selesaikan proses sebelumnya terlebih dahulu.</p>
+													</div>
+												</div>
+											</div>
+											
+										@elseif($data2->status_step == '1')
+											<div class="timeline__row">
+												<div class="timeline__row_icon">
+													<div class="timeline-icon success">
+														<i class="fa fa-check"></i>
+													</div>
+												</div>
+												<div class="timeline__row_content">
+													<span class="badge bg-success">@if(date('d/m/Y', strtotime($data2->tgl)) == date('d/m/Y')) Hari  Ini @else {{date('d/m/Y', strtotime($data2->nextdate))}} @endif</span>
+													<div class="timeline__row_content_desc" style="border: solid #5bbf81; background-color: #d2ffe8;">
+														<h5>Inovasi Jasa Diterima</h5>
+														<p>Inovasi jasa anda telah berhasil di verifikasi oleh tim JIWAUBL, silahkan cek pada laman E-commerce JIWAUBL.</p>
+														<a href="{{route('masterjasa')}}/detail/{{ base64_encode($data2->idinovasi) }}" class="btn btn-outline-success rounded-pill">Lihat Detail Pengajuan</a>
+													</div>
+												</div>
+											</div>
+										@elseif($data2->status_step == '2')
+											<div class="timeline__row">
+												<div class="timeline__row_icon">
+													<div class="timeline-icon warning">
+														<i class="fa fa-exclamation"></i>
+													</div>
+												</div>
+												<div class="timeline__row_content">
+													<span class="badge bg-warning">@if(date('d/m/Y', strtotime($data2->tgl)) == date('d/m/Y')) Hari  Ini @else {{date('d/m/Y', strtotime($data2->tgl))}} @endif</span>
+													<div class="timeline__row_content_desc" style="border: solid #ffd966; background-color: #fffcc9;">
+														<h5>Perbaikan Dokumen Inovasi Jasa</h5>
+														<p>Silahkan perbaiki dokumen pengajuan anda sesuai catatan yang tertera.</p>
+														<a href="{{route('masterjasa')}}/detail/{{ base64_encode($data2->idinovasi) }}" class="btn btn-outline-warning rounded-pill">Lihat Detail Pengajuan</a>
+														<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#mdrevision2{{$data2->idinovasi}}" class="btn btn-outline-warning rounded-pill">Lihat Catatan</a>
+													</div>
+												</div>
+											</div>
+
+											<div class="timeline__row">
+												<div class="timeline__row_icon">
+													<div class="timeline-icon secondary" style="border: solid #ced4da; color: #ced4da;">
+														<i class="fa fa-lock"></i>
+													</div>
+												</div>
+												<div class="timeline__row_content">												
+													<div class="timeline__row_content_desc" style="background-color: #e4eaf0;">
+														<p>Silakan selesaikan proses sebelumnya terlebih dahulu.</p>
+													</div>
+												</div>
+											</div>
+
+										@elseif($data2->status_step == '3')
+											<div class="timeline__row">
+												<div class="timeline__row_icon">
+													<div class="timeline-icon danger">
+														<i class="fa fa-times"></i>
+													</div>
+												</div>
+												<div class="timeline__row_content">
+													<span class="badge bg-danger">@if(date('d/m/Y', strtotime($data2->tgl)) == date('d/m/Y')) Hari  Ini @else {{date('d/m/Y', strtotime($data2->tgl))}} @endif</span>
+													<div class="timeline__row_content_desc" style="border: solid #e06666; background-color: #ffdede;">
+														<h5 style="text-color: #f44336;">Pengajuan Dokumen Inovasi Jasa Ditolak</h5>
+														<p>Mohon maaf dokumen pengajuan inovasi jasa anda ditolak. Silahkan lihat catatan untuk melakukan pengajuan kembali.</p>
+														<a href="javascript:void(0);" data-bs-toggle="modal" data-bs-target="#mdreject2{{$data2->idinovasi}}" class="btn btn-outline-danger rounded-pill">Lihat Catatan</a>
+													</div>
+												</div>
+											</div>	
+										@endif
+										
+										
+										<!-- Start Modal Revision -->
+										<div
+											class="modal fade text-left"
+											id="mdrevision2{{$data2->idinovasi}}"
+											tabindex="-1"
+											role="dialog"
+											aria-labelledby="myModalLabel4"
+											data-bs-backdrop="false"
+											aria-hidden="true"
+										>
+											<div
+											class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+											role="document"
+											>
+											<div class="modal-content">
+												<div class="modal-header" style="background: #ffc107">
+												<h4 class="modal-title" id="myModalLabel4">
+													<font color="#fff">Catatan Perbaikan</font>
+												</h4>
+												<button
+													type="button"
+													class="close"
+													data-bs-dismiss="modal"
+													aria-label="Close"
+												>
+													<i data-feather="x"></i>
+												</button>
+												</div>
+												<div class="modal-body">
+												
+												<p>
+													{!! html_entity_decode($data2->catatan) !!}
+												</p>
+												</div>
+												<div class="modal-footer">
+												<button
+													type="button"
+													class="btn btn-light-secondary"
+													data-bs-dismiss="modal"
+												>
+													<i class="bx bx-x d-block d-sm-none"></i>
+													<span class="d-none d-sm-block">Tutup</span>
+												</button>
+												</div>
+											</div>
 											</div>
 										</div>
-										<div class="timeline__row">
-											<div class="timeline__row_icon">
-												<div class="timeline-icon warning">
-													<i class="fa fa-exclamation"></i>
+										<!-- End Modal Revision -->
+
+										<!-- Start modal rejected -->
+										<div
+											class="modal fade text-left"
+											id="mdreject2{{$data2->idinovasi}}"
+											tabindex="-1"
+											role="dialog"
+											aria-labelledby="myModalLabel4"
+											data-bs-backdrop="false"
+											aria-hidden="true"
+										>
+											<div
+											class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+											role="document"
+											>
+											<div class="modal-content">
+												<div class="modal-header" style="background: #dc3545;">
+												<h4 class="modal-title" id="myModalLabel4">
+													<font color="#fff">Catatan Anulir</font>
+												</h4>
+												<button
+													type="button"
+													class="close"
+													data-bs-dismiss="modal"
+													aria-label="Close"
+												>
+													<i data-feather="x"></i>
+												</button>
+												</div>
+												<div class="modal-body">
+												<p>
+												{!! html_entity_decode($data2->catatan) !!}
+												</p>
+												</div>
+												<div class="modal-footer">
+												<button
+													type="button"
+													class="btn btn-light-secondary"
+													data-bs-dismiss="modal"
+												>
+													<i class="bx bx-x d-block d-sm-none"></i>
+													<span class="d-none d-sm-block">Tutup</span>
+												</button>
 												</div>
 											</div>
-											<div class="timeline__row_content">
-												<span class="badge bg-primary">Jan 25, 2020</span>
-												<div class="timeline__row_content_desc">
-													<h5>Lorem Ipsum Not Recommended</h5>
-													<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Placeat fugit dolorem explicabo necessitatibus, vel reprehenderit.</p>
-													<a href="#!">View more</a>
-												</div>
 											</div>
 										</div>
-										<div class="timeline__row">
-											<div class="timeline__row_icon">
-												<div class="timeline-icon danger">
-													<i class="fa fa-times"></i>
+										<!-- End modal hapus -->
+											
+											<!-- <div class="timeline__row">
+												<div class="timeline__row_icon">
+													<div class="timeline-icon danger">
+														<i class="fa fa-times"></i>
+													</div>
 												</div>
-											</div>
-											<div class="timeline__row_content">
-												<span class="badge bg-primary">Dec 12, 2019</span>
-												<div class="timeline__row_content_desc">
-													<h5>Lorem Ipsum Failed</h5>
-													<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Placeat fugit dolorem explicabo necessitatibus, vel reprehenderit.</p>
-													<a href="#!">View more</a>
+												<div class="timeline__row_content">
+													<span class="badge bg-primary">Dec 12, 2019</span>
+													<div class="timeline__row_content_desc">
+														<h5>Lorem Ipsum Failed</h5>
+														<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Placeat fugit dolorem explicabo necessitatibus, vel reprehenderit.</p>
+														<a href="#!">View more</a>
+													</div>
 												</div>
-											</div>
-										</div>
+											</div> -->
+											@endforeach
+										@endif
+										
 									</div>
 									
 									</div>

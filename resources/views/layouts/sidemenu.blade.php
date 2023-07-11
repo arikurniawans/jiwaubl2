@@ -6,7 +6,7 @@
               <div class="logo">
                 <a href="index.html"
                   ><img
-                    src="assets/compiled/svg/logo.svg"
+                    src="{{asset('public/logoppikmail.jpg')}}"
                     alt="Logo"
                     srcset=""
                 /></a>
@@ -180,6 +180,18 @@
               @endif
               
               <!-- <li class="sidebar-title">Raise Support</li> -->
+
+              @if(Auth::user()->isAdmin == '1')
+              <li class="sidebar-item">
+                <a
+                  href="{{route('webslider')}}"
+                  class="sidebar-link"
+                >
+                  <i class="fa fa-cubes"></i>
+                  <span>Manajemen Web Slider</span>
+                </a>
+              </li>
+              @endif
               
               <li class="sidebar-item">
                 <a

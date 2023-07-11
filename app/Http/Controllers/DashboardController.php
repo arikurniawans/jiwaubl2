@@ -15,7 +15,7 @@ class DashboardController extends Controller
     //
     public function getIndex(Request $request) {
         
-        $produk = DB::table('v_tahapan')->where('jenis','produk')->get();
+        $produk = DB::table('v_tahapan')->where('jenis','produk')->get();        
 
         $data = [
             'title' => 'Dashboard',
@@ -36,10 +36,12 @@ class DashboardController extends Controller
     public function getDasbor(Request $request) {
         
         $produk = DB::table('v_tahapan')->where(array('jenis' => 'produk', 'iduser' => Auth::user()->id))->orderBy('idinovasi', 'desc')->get();
+        $jasa = DB::table('v_tahapan')->where(array('jenis' => 'jasa', 'iduser' => Auth::user()->id))->orderBy('idinovasi', 'desc')->get();
 
         $data = [
             'title' => 'Dashboard',
             'datatahapan' => $produk,
+            'datatahapan2' => $jasa,
             'breadcrumb' => [
                 ['url' => '/' , 'name' => 'Dashboard'],
                 ['url' => '/interface' , 'name' => 'Interface'],
@@ -50,7 +52,7 @@ class DashboardController extends Controller
 
          
         return view('datadashboard.dasborinovator', $data);
-        // dd($grafikTransaksi);
+        // dd($jasa);
     }
 
 }

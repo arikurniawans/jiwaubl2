@@ -17,7 +17,11 @@ class MJasaController extends Controller
     public function getIndex(Request $request) 
     {
 
-        $jasa = DB::table('v_inovasi')->where('jenis_inovasi','jasa')->get();
+        if(Auth::user()->isAdmin == '1'){
+            $jasa = DB::table('v_inovasi')->where('jenis_inovasi','jasa')->get(); 
+        }else if(Auth::user()->isAdmin == '0'){
+            $jasa = DB::table('v_inovasi')->where(array('jenis_inovasi' => 'jasa', 'id' => Auth::user()->id))->get();
+        }
 
         $data = [
             'title' => 'Daftar Data Master Inovasi (jasa)',
@@ -37,7 +41,12 @@ class MJasaController extends Controller
 
     public function getCreate() 
     {
-        $bidang = DB::table('bidang_tb')->where(array('statusbidang' => 'T', 'jenis_bidang' => '1'))->orderBy('idbidang', 'ASC')->get();
+        $jasa = DB::table('v_inovasi')->where(array('jenis_inovasi' => 'jasa', 'id' => Auth::user()->id))->orderBy('id_inovasi', 'desc')->limit(1)->get();
+       
+        
+        if($jasa->isEmpty())
+        {
+            $bidang = DB::table('bidang_tb')->where(array('statusbidang' => 'T', 'jenis_bidang' => '0'))->orderBy('idbidang', 'ASC')->get();
 
         $data = [
             'title' => 'Buat Data Master Inovasi (jasa)',
@@ -53,7 +62,30 @@ class MJasaController extends Controller
 
          
         return view('datamasterjasa.create', $data);
+        }else{
+            if ($jasa[0]->status_inovasi == 1 || $jasa[0]->status_inovasi == 3) {
+                $bidang = DB::table('bidang_tb')->where(array('statusbidang' => 'T', 'jenis_bidang' => '0'))->orderBy('idbidang', 'ASC')->get();
+    
+                $data = [
+                    'title' => 'Buat Data Master Inovasi (jasa)',
+                    'bidang' => $bidang,
+                    'breadcrumb' => [
+                        ['url' => 'dashboard' , 'name' => 'Dashboard'],
+                        ['url' => 'masterjasa' , 'name' => 'Master Inovasi (jasa)'],
+                        ['url' => '' , 'name' => 'Buat Master Data Inovasi (jasa)'],
+                    ],
+                    
+                    'testVariable' => 'Buat Master Data Inovasi (jasa)'
+                ];
+    
+                
+                return view('datamasterjasa.create', $data);
+            }else{
+                Session::flash('warning','Anda dapat menambahkan pengajuan baru setelah pengajuan sebelumnya ditolak atau di publish oleh tim reviewer JIWAUBL');
+                return redirect('masterjasa');           
+            }    
     }
+}
 
     public function store(Request $request)
     {
@@ -86,11 +118,20 @@ class MJasaController extends Controller
 	    		'harga_produk' => str_replace(".", "", $request->post('harga')),
 	    		'unggah_dokumen' => $new_name,
                 'jenis_inovasi' => 'jasa',
-                'created_by' => Auth::id()
+                'created_by' => Auth::id(),
+                'created_at' => Carbon::now()->toDateTimeString()
 	    	);
 	            	
 	        $simpan = DB::table('inovasi_tb')->insert($data);
-	        if($simpan) {
+            $ids = DB::table('inovasi_tb')->orderBy('id_inovasi', 'desc')->first();
+
+	         if($simpan) {
+                $datas = array(
+                    'id_inovasi' => $ids->id_inovasi,
+                    'created_at' => Carbon::now()->toDateTimeString()
+                );
+                $simpantahapan = DB::table('tahapan')->insert($datas);
+
 	            Session::flash('success','Berhasil menambahkan inovasi (jasa) baru');
 	            return redirect('masterjasa');
 	        }else{
